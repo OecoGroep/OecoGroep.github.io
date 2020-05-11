@@ -122,9 +122,8 @@ task :deploy, [:deployment_configuration] => :build do |t, args|
 
     deploy_dir = matchdata[1]
     sh "rsync -avz --delete _site/ #{deploy_dir}"
-    time = Time.new
-    File.open("_last_deploy.txt", 'w') {|f| f.write(time) }
-    %x{git add -A && git commit -m "autopush by Rakefile at #{time}" && git push} if $git_autopush
+    File.open("_last_deploy.txt", 'w') {|f| f.write(Time.new) }
+    %x{git add -A && git commit -m "autopush by Rakefile at #{Time.new}" && git push} if $git_autopush
   else
     puts "Error! deploy_url not found in _config_deploy.yml"
     exit 1
@@ -146,10 +145,9 @@ task :deploy_github => :build do |t, args|
     exit if ans != 'Y' 
   end
 
-  %x{git add -A && git commit -m "autopush by Rakefile at #{time}" && git push origin gh_pages} if $git_autopush
+  %x{git add -A && git commit -m "autopush by Rakefile at #{Time.new}" && git push origin gh_pages} if $git_autopush
   
-  time = Time.new
-  File.open("_last_deploy.txt", 'w') {|f| f.write(time) }
+  File.open("_last_deploy.txt", 'w') {|f| f.write(Time.new) }
 end
 
 desc 'Create a post'
